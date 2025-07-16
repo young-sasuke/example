@@ -69,6 +69,37 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    User: User1;
+    categories: Category;
+    featured_products: FeaturedProduct;
+    fall_items: FallItem;
+    fabric_repair_items: FabricRepairItem;
+    fabric_essentials: FabricEssential;
+    dyeing_items: DyeingItem;
+    design_parts: DesignPart;
+    delivery_status_updates: DeliveryStatusUpdate;
+    coupons: Coupon;
+    admins: Admin;
+    alteration_items: AlterationItem;
+    boys_clothing: BoysClothing;
+    cart_items: CartItem;
+    delivery_assignments: DeliveryAssignment;
+    delivery_personnel: DeliveryPersonnel;
+    delivery_images: DeliveryImage;
+    tailors: Tailor;
+    lintremoval_items: LintremovalItem;
+    rafu_items: RafuItem;
+    girls_clothing: GirlsClothing;
+    orders: Order;
+    men_clothing: MenClothing;
+    otp_requests: OtpRequest;
+    pico_items: PicoItem;
+    profiles: Profile;
+    quickfix_orders: QuickfixOrder;
+    service_areas: ServiceArea;
+    top_tailors: TopTailor;
+    user_coupons: UserCoupon;
+    women_clothing: WomenClothing;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,12 +108,43 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    User: UserSelect<false> | UserSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    featured_products: FeaturedProductsSelect<false> | FeaturedProductsSelect<true>;
+    fall_items: FallItemsSelect<false> | FallItemsSelect<true>;
+    fabric_repair_items: FabricRepairItemsSelect<false> | FabricRepairItemsSelect<true>;
+    fabric_essentials: FabricEssentialsSelect<false> | FabricEssentialsSelect<true>;
+    dyeing_items: DyeingItemsSelect<false> | DyeingItemsSelect<true>;
+    design_parts: DesignPartsSelect<false> | DesignPartsSelect<true>;
+    delivery_status_updates: DeliveryStatusUpdatesSelect<false> | DeliveryStatusUpdatesSelect<true>;
+    coupons: CouponsSelect<false> | CouponsSelect<true>;
+    admins: AdminsSelect<false> | AdminsSelect<true>;
+    alteration_items: AlterationItemsSelect<false> | AlterationItemsSelect<true>;
+    boys_clothing: BoysClothingSelect<false> | BoysClothingSelect<true>;
+    cart_items: CartItemsSelect<false> | CartItemsSelect<true>;
+    delivery_assignments: DeliveryAssignmentsSelect<false> | DeliveryAssignmentsSelect<true>;
+    delivery_personnel: DeliveryPersonnelSelect<false> | DeliveryPersonnelSelect<true>;
+    delivery_images: DeliveryImagesSelect<false> | DeliveryImagesSelect<true>;
+    tailors: TailorsSelect<false> | TailorsSelect<true>;
+    lintremoval_items: LintremovalItemsSelect<false> | LintremovalItemsSelect<true>;
+    rafu_items: RafuItemsSelect<false> | RafuItemsSelect<true>;
+    girls_clothing: GirlsClothingSelect<false> | GirlsClothingSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    men_clothing: MenClothingSelect<false> | MenClothingSelect<true>;
+    otp_requests: OtpRequestsSelect<false> | OtpRequestsSelect<true>;
+    pico_items: PicoItemsSelect<false> | PicoItemsSelect<true>;
+    profiles: ProfilesSelect<false> | ProfilesSelect<true>;
+    quickfix_orders: QuickfixOrdersSelect<false> | QuickfixOrdersSelect<true>;
+    service_areas: ServiceAreasSelect<false> | ServiceAreasSelect<true>;
+    top_tailors: TopTailorsSelect<false> | TopTailorsSelect<true>;
+    user_coupons: UserCouponsSelect<false> | UserCouponsSelect<true>;
+    women_clothing: WomenClothingSelect<false> | WomenClothingSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   globals: {};
   globalsSelect: {};
@@ -118,7 +180,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -142,7 +204,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -158,23 +220,723 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "User".
+ */
+export interface User1 {
+  id: number;
+  email: string;
+  role?: string | null;
+  created_at?: string | null;
+  Design?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  Measurement?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  profile?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  Address?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  password?: string | null;
+  profile_image_url?: string | null;
+  phone_number?: string | null;
+  requirement_images?: string | null;
+  sample_images?: string | null;
+  measurement_samples?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  fabric_samples_image?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  image_url?: string | null;
+  is_active?: boolean | null;
+  sort_order?: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "featured_products".
+ */
+export interface FeaturedProduct {
+  id: number;
+  name: string;
+  description?: string | null;
+  price: string;
+  image_url?: string | null;
+  category?: string | null;
+  is_active?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fall_items".
+ */
+export interface FallItem {
+  id: number;
+  item_name: string;
+  price?: number | null;
+  image_url?: string | null;
+  description?: string | null;
+  delivery?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fabric_repair_items".
+ */
+export interface FabricRepairItem {
+  id: number;
+  item_name: string;
+  price?: number | null;
+  image_url?: string | null;
+  description?: string | null;
+  delivery?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fabric_essentials".
+ */
+export interface FabricEssential {
+  id: number;
+  name: string;
+  description?: string | null;
+  image_url?: string | null;
+  background_color?: string | null;
+  category?: string | null;
+  item_type?: string | null;
+  is_active?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dyeing_items".
+ */
+export interface DyeingItem {
+  id: number;
+  item_name: string;
+  price?: number | null;
+  image_url?: string | null;
+  description?: string | null;
+  delivery?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "design_parts".
+ */
+export interface DesignPart {
+  id: number;
+  category: string;
+  item_type: string;
+  part_type: string;
+  option_name: string;
+  image_url?: string | null;
+  created_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery_status_updates".
+ */
+export interface DeliveryStatusUpdate {
+  id: number;
+  assignment_id?: string | null;
+  status?: string | null;
+  timestamp?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons".
+ */
+export interface Coupon {
+  id: number;
+  code: string;
+  title: string;
+  description?: string | null;
+  discount_type: string;
+  discount_value: number;
+  min_order_amount?: number | null;
+  max_discount_amount?: number | null;
+  usage_limit?: number | null;
+  used_count?: number | null;
+  valid_from: string;
+  valid_until: string;
+  is_active?: boolean | null;
+  applicable_categories?:
+    | {
+        category?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  exclusive?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "admins".
+ */
+export interface Admin {
+  id: number;
+  email: string;
+  role: string;
+  lastlogin?: number | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alteration_items".
+ */
+export interface AlterationItem {
+  id: number;
+  item_name: string;
+  category: string;
+  price?: number | null;
+  description?: string | null;
+  delivery?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "boys_clothing".
+ */
+export interface BoysClothing {
+  id: number;
+  name: string;
+  description?: string | null;
+  image_url?: string | null;
+  background_color?: string | null;
+  category?: string | null;
+  is_active?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cart_items".
+ */
+export interface CartItem {
+  id: number;
+  user_id: string;
+  item_type?: string | null;
+  category?: string | null;
+  tailor_name?: string | null;
+  price?: number | null;
+  quantity?: number | null;
+  order_type?: string | null;
+  design_json?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  measurement_json?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  tailor_image?: string | null;
+  inserted_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery_assignments".
+ */
+export interface DeliveryAssignment {
+  id: number;
+  order_id?: string | null;
+  delivery_person_id?: string | null;
+  assigned_at?: string | null;
+  accepted?: boolean | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery_personnel".
+ */
+export interface DeliveryPersonnel {
+  id: number;
+  email: string;
+  name?: string | null;
+  phone_number?: string | null;
+  created_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery_images".
+ */
+export interface DeliveryImage {
+  id: number;
+  assignment_id?: string | null;
+  image_type?: string | null;
+  image_url?: string | null;
+  uploaded_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tailors".
+ */
+export interface Tailor {
+  id: number;
+  name: string;
+  boutique_items?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  profile?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  alterations?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  tailorings?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  email?: string | null;
+  phone_number?: string | null;
+  status?: string | null;
+  fcm_token?: string | null;
+  rents?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lintremoval_items".
+ */
+export interface LintremovalItem {
+  id: number;
+  item_name: string;
+  description?: string | null;
+  delivery?: string | null;
+  price?: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  image_url?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rafu_items".
+ */
+export interface RafuItem {
+  id: number;
+  item_name: string;
+  price?: number | null;
+  image_url?: string | null;
+  description?: string | null;
+  delivery?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "girls_clothing".
+ */
+export interface GirlsClothing {
+  id: number;
+  name: string;
+  description?: string | null;
+  image_url?: string | null;
+  background_color?: string | null;
+  category?: string | null;
+  is_active?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  user_id: string;
+  tailor_id?: string | null;
+  tailor_name: string;
+  items:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  created_at?: string | null;
+  total_price: number;
+  status?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "men_clothing".
+ */
+export interface MenClothing {
+  id: number;
+  name: string;
+  description?: string | null;
+  image_url?: string | null;
+  background_color?: string | null;
+  category?: string | null;
+  is_active?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "otp_requests".
+ */
+export interface OtpRequest {
+  id: number;
+  phone_number: string;
+  otp: string;
+  expires_at: string;
+  verified?: boolean | null;
+  created_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pico_items".
+ */
+export interface PicoItem {
+  id: number;
+  item_name: string;
+  price?: number | null;
+  image_url?: string | null;
+  description?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profiles".
+ */
+export interface Profile {
+  id: number;
+  created_at: string;
+  name?: string | null;
+  bio?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  address?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  orders?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quickfix_orders".
+ */
+export interface QuickfixOrder {
+  id: number;
+  user_id: string;
+  tailor_name: string;
+  items:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  total_price: number;
+  status?: string | null;
+  created_at?: string | null;
+  order_type?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service_areas".
+ */
+export interface ServiceArea {
+  id: number;
+  city_name: string;
+  state_name: string;
+  country_name?: string | null;
+  is_active?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "top_tailors".
+ */
+export interface TopTailor {
+  id: number;
+  name: string;
+  image_url?: string | null;
+  rating?: number | null;
+  location?: string | null;
+  specialization?: string | null;
+  is_active?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user_coupons".
+ */
+export interface UserCoupon {
+  id: number;
+  user_id: string;
+  coupon_id: string;
+  used_at?: string | null;
+  order_id?: string | null;
+  created_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "women_clothing".
+ */
+export interface WomenClothing {
+  id: number;
+  name: string;
+  description?: string | null;
+  image_url?: string | null;
+  background_color?: string | null;
+  category?: string | null;
+  is_active?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'User';
+        value: number | User1;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'featured_products';
+        value: number | FeaturedProduct;
+      } | null)
+    | ({
+        relationTo: 'fall_items';
+        value: number | FallItem;
+      } | null)
+    | ({
+        relationTo: 'fabric_repair_items';
+        value: number | FabricRepairItem;
+      } | null)
+    | ({
+        relationTo: 'fabric_essentials';
+        value: number | FabricEssential;
+      } | null)
+    | ({
+        relationTo: 'dyeing_items';
+        value: number | DyeingItem;
+      } | null)
+    | ({
+        relationTo: 'design_parts';
+        value: number | DesignPart;
+      } | null)
+    | ({
+        relationTo: 'delivery_status_updates';
+        value: number | DeliveryStatusUpdate;
+      } | null)
+    | ({
+        relationTo: 'coupons';
+        value: number | Coupon;
+      } | null)
+    | ({
+        relationTo: 'admins';
+        value: number | Admin;
+      } | null)
+    | ({
+        relationTo: 'alteration_items';
+        value: number | AlterationItem;
+      } | null)
+    | ({
+        relationTo: 'boys_clothing';
+        value: number | BoysClothing;
+      } | null)
+    | ({
+        relationTo: 'cart_items';
+        value: number | CartItem;
+      } | null)
+    | ({
+        relationTo: 'delivery_assignments';
+        value: number | DeliveryAssignment;
+      } | null)
+    | ({
+        relationTo: 'delivery_personnel';
+        value: number | DeliveryPersonnel;
+      } | null)
+    | ({
+        relationTo: 'delivery_images';
+        value: number | DeliveryImage;
+      } | null)
+    | ({
+        relationTo: 'tailors';
+        value: number | Tailor;
+      } | null)
+    | ({
+        relationTo: 'lintremoval_items';
+        value: number | LintremovalItem;
+      } | null)
+    | ({
+        relationTo: 'rafu_items';
+        value: number | RafuItem;
+      } | null)
+    | ({
+        relationTo: 'girls_clothing';
+        value: number | GirlsClothing;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'men_clothing';
+        value: number | MenClothing;
+      } | null)
+    | ({
+        relationTo: 'otp_requests';
+        value: number | OtpRequest;
+      } | null)
+    | ({
+        relationTo: 'pico_items';
+        value: number | PicoItem;
+      } | null)
+    | ({
+        relationTo: 'profiles';
+        value: number | Profile;
+      } | null)
+    | ({
+        relationTo: 'quickfix_orders';
+        value: number | QuickfixOrder;
+      } | null)
+    | ({
+        relationTo: 'service_areas';
+        value: number | ServiceArea;
+      } | null)
+    | ({
+        relationTo: 'top_tailors';
+        value: number | TopTailor;
+      } | null)
+    | ({
+        relationTo: 'user_coupons';
+        value: number | UserCoupon;
+      } | null)
+    | ({
+        relationTo: 'women_clothing';
+        value: number | WomenClothing;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -184,10 +946,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -207,7 +969,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -252,6 +1014,407 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "User_select".
+ */
+export interface UserSelect<T extends boolean = true> {
+  email?: T;
+  role?: T;
+  created_at?: T;
+  Design?: T;
+  Measurement?: T;
+  profile?: T;
+  Address?: T;
+  password?: T;
+  profile_image_url?: T;
+  phone_number?: T;
+  requirement_images?: T;
+  sample_images?: T;
+  measurement_samples?: T;
+  fabric_samples_image?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  image_url?: T;
+  is_active?: T;
+  sort_order?: T;
+  created_at?: T;
+  updated_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "featured_products_select".
+ */
+export interface FeaturedProductsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  price?: T;
+  image_url?: T;
+  category?: T;
+  is_active?: T;
+  created_at?: T;
+  updated_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fall_items_select".
+ */
+export interface FallItemsSelect<T extends boolean = true> {
+  item_name?: T;
+  price?: T;
+  image_url?: T;
+  description?: T;
+  delivery?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fabric_repair_items_select".
+ */
+export interface FabricRepairItemsSelect<T extends boolean = true> {
+  item_name?: T;
+  price?: T;
+  image_url?: T;
+  description?: T;
+  delivery?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fabric_essentials_select".
+ */
+export interface FabricEssentialsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  image_url?: T;
+  background_color?: T;
+  category?: T;
+  item_type?: T;
+  is_active?: T;
+  created_at?: T;
+  updated_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dyeing_items_select".
+ */
+export interface DyeingItemsSelect<T extends boolean = true> {
+  item_name?: T;
+  price?: T;
+  image_url?: T;
+  description?: T;
+  delivery?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "design_parts_select".
+ */
+export interface DesignPartsSelect<T extends boolean = true> {
+  category?: T;
+  item_type?: T;
+  part_type?: T;
+  option_name?: T;
+  image_url?: T;
+  created_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery_status_updates_select".
+ */
+export interface DeliveryStatusUpdatesSelect<T extends boolean = true> {
+  assignment_id?: T;
+  status?: T;
+  timestamp?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons_select".
+ */
+export interface CouponsSelect<T extends boolean = true> {
+  code?: T;
+  title?: T;
+  description?: T;
+  discount_type?: T;
+  discount_value?: T;
+  min_order_amount?: T;
+  max_discount_amount?: T;
+  usage_limit?: T;
+  used_count?: T;
+  valid_from?: T;
+  valid_until?: T;
+  is_active?: T;
+  applicable_categories?:
+    | T
+    | {
+        category?: T;
+        id?: T;
+      };
+  exclusive?: T;
+  created_at?: T;
+  updated_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "admins_select".
+ */
+export interface AdminsSelect<T extends boolean = true> {
+  email?: T;
+  role?: T;
+  lastlogin?: T;
+  password?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alteration_items_select".
+ */
+export interface AlterationItemsSelect<T extends boolean = true> {
+  item_name?: T;
+  category?: T;
+  price?: T;
+  description?: T;
+  delivery?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "boys_clothing_select".
+ */
+export interface BoysClothingSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  image_url?: T;
+  background_color?: T;
+  category?: T;
+  is_active?: T;
+  created_at?: T;
+  updated_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cart_items_select".
+ */
+export interface CartItemsSelect<T extends boolean = true> {
+  user_id?: T;
+  item_type?: T;
+  category?: T;
+  tailor_name?: T;
+  price?: T;
+  quantity?: T;
+  order_type?: T;
+  design_json?: T;
+  measurement_json?: T;
+  tailor_image?: T;
+  inserted_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery_assignments_select".
+ */
+export interface DeliveryAssignmentsSelect<T extends boolean = true> {
+  order_id?: T;
+  delivery_person_id?: T;
+  assigned_at?: T;
+  accepted?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery_personnel_select".
+ */
+export interface DeliveryPersonnelSelect<T extends boolean = true> {
+  email?: T;
+  name?: T;
+  phone_number?: T;
+  created_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery_images_select".
+ */
+export interface DeliveryImagesSelect<T extends boolean = true> {
+  assignment_id?: T;
+  image_type?: T;
+  image_url?: T;
+  uploaded_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tailors_select".
+ */
+export interface TailorsSelect<T extends boolean = true> {
+  name?: T;
+  boutique_items?: T;
+  profile?: T;
+  alterations?: T;
+  tailorings?: T;
+  email?: T;
+  phone_number?: T;
+  status?: T;
+  fcm_token?: T;
+  rents?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lintremoval_items_select".
+ */
+export interface LintremovalItemsSelect<T extends boolean = true> {
+  item_name?: T;
+  description?: T;
+  delivery?: T;
+  price?: T;
+  created_at?: T;
+  updated_at?: T;
+  image_url?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rafu_items_select".
+ */
+export interface RafuItemsSelect<T extends boolean = true> {
+  item_name?: T;
+  price?: T;
+  image_url?: T;
+  description?: T;
+  delivery?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "girls_clothing_select".
+ */
+export interface GirlsClothingSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  image_url?: T;
+  background_color?: T;
+  category?: T;
+  is_active?: T;
+  created_at?: T;
+  updated_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  user_id?: T;
+  tailor_id?: T;
+  tailor_name?: T;
+  items?: T;
+  created_at?: T;
+  total_price?: T;
+  status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "men_clothing_select".
+ */
+export interface MenClothingSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  image_url?: T;
+  background_color?: T;
+  category?: T;
+  is_active?: T;
+  created_at?: T;
+  updated_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "otp_requests_select".
+ */
+export interface OtpRequestsSelect<T extends boolean = true> {
+  phone_number?: T;
+  otp?: T;
+  expires_at?: T;
+  verified?: T;
+  created_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pico_items_select".
+ */
+export interface PicoItemsSelect<T extends boolean = true> {
+  item_name?: T;
+  price?: T;
+  image_url?: T;
+  description?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profiles_select".
+ */
+export interface ProfilesSelect<T extends boolean = true> {
+  created_at?: T;
+  name?: T;
+  bio?: T;
+  address?: T;
+  orders?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quickfix_orders_select".
+ */
+export interface QuickfixOrdersSelect<T extends boolean = true> {
+  user_id?: T;
+  tailor_name?: T;
+  items?: T;
+  total_price?: T;
+  status?: T;
+  created_at?: T;
+  order_type?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service_areas_select".
+ */
+export interface ServiceAreasSelect<T extends boolean = true> {
+  city_name?: T;
+  state_name?: T;
+  country_name?: T;
+  is_active?: T;
+  created_at?: T;
+  updated_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "top_tailors_select".
+ */
+export interface TopTailorsSelect<T extends boolean = true> {
+  name?: T;
+  image_url?: T;
+  rating?: T;
+  location?: T;
+  specialization?: T;
+  is_active?: T;
+  created_at?: T;
+  updated_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user_coupons_select".
+ */
+export interface UserCouponsSelect<T extends boolean = true> {
+  user_id?: T;
+  coupon_id?: T;
+  used_at?: T;
+  order_id?: T;
+  created_at?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "women_clothing_select".
+ */
+export interface WomenClothingSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  image_url?: T;
+  background_color?: T;
+  category?: T;
+  is_active?: T;
+  created_at?: T;
+  updated_at?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
