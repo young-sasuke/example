@@ -528,8 +528,10 @@ export interface DeliveryImage {
  * via the `definition` "tailors".
  */
 export interface Tailor {
-  id: number;
+  id: string;
   name: string;
+  email?: string | null;
+  phone_number?: string | null;
   boutique_items?:
     | {
         [k: string]: unknown;
@@ -566,10 +568,8 @@ export interface Tailor {
     | number
     | boolean
     | null;
-  email?: string | null;
-  phone_number?: string | null;
-  status?: string | null;
   fcm_token?: string | null;
+  status?: string | null;
   rents?:
     | {
         [k: string]: unknown;
@@ -579,6 +579,8 @@ export interface Tailor {
     | number
     | boolean
     | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -879,7 +881,7 @@ export interface PayloadLockedDocument {
       } | null)
     | ({
         relationTo: 'tailors';
-        value: number | Tailor;
+        value: string | Tailor;
       } | null)
     | ({
         relationTo: 'lintremoval_items';
@@ -1244,16 +1246,19 @@ export interface DeliveryImagesSelect<T extends boolean = true> {
  * via the `definition` "tailors_select".
  */
 export interface TailorsSelect<T extends boolean = true> {
+  id?: T;
   name?: T;
+  email?: T;
+  phone_number?: T;
   boutique_items?: T;
   profile?: T;
   alterations?: T;
   tailorings?: T;
-  email?: T;
-  phone_number?: T;
-  status?: T;
   fcm_token?: T;
+  status?: T;
   rents?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
