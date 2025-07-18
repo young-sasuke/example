@@ -37,7 +37,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/collections/image.sts"  ],
   "exclude": [
     "node_modules"
   ],
