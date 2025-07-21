@@ -3,10 +3,12 @@ import { getPayload } from 'payload';
 import configPromise from '@payload-config';
 import { supabase } from '@/utils/supabaseClient';
 import { NextRequest, NextResponse } from 'next/server';
+import { ImageExtractor } from '@/utils/imageExtractor';
 
 interface SupabaseRecord {
   id: string | number;
   title?: string;
+  name?: string;
   [key: string]: unknown;
 }
 
@@ -42,6 +44,7 @@ export async function POST(request: NextRequest) {
     let created = 0;
     let updated = 0;
     let failed = 0;
+    let imagesExtracted = 0;
 
     // Process each record
     for (const record of (data as SupabaseRecord[]) || []) {
@@ -57,22 +60,36 @@ export async function POST(request: NextRequest) {
           limit: 1,
         });
 
+        let docId: string | number;
+
         if (existing.docs.length > 0) {
           // Update existing record
-          await payload.update({
+          const updatedDoc = await payload.update({
             collection: collectionSlug,
             id: existing.docs[0].id,
             data: record as any,
           });
           updated++;
+          docId = updatedDoc.id;
         } else {
           // Create new record
-          await payload.create({
+          const createdDoc = await payload.create({
             collection: collectionSlug,
             data: record as any,
           });
           created++;
+          docId = createdDoc.id;
         }
+
+        // Extract images from the record
+        const imageCount = await extractImagesFromRecord(
+          payload,
+          record,
+          collectionSlug,
+          docId
+        );
+        imagesExtracted += imageCount;
+
       } catch (error) {
         console.error(`Error processing record ${record.id}:`, error);
         failed++;
@@ -87,6 +104,7 @@ export async function POST(request: NextRequest) {
         created,
         updated,
         failed,
+        imagesExtracted,
       },
     });
   } catch (error) {
@@ -96,4 +114,87 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}   
+}
+
+async function extractImagesFromRecord(
+  payload: any,
+  record: SupabaseRecord,
+  collectionSlug: string,
+  docId: string | number
+): Promise<number> {
+  let extractedCount = 0;
+
+  try {
+    // Find JSON fields in the record
+    const jsonFields = Object.keys(record).filter(key => {
+      const value = record[key];
+      return value && typeof value === 'object' && !(value instanceof Date);
+    });
+
+    const extractedImageIds: number[] = [];
+
+    for (const fieldName of jsonFields) {
+      const fieldData = record[fieldName];
+      
+      // Extract images from this field
+      const images = ImageExtractor.extractImageUrls(fieldData, fieldName);
+      
+      for (const imageInfo of images) {
+        try {
+          // Check if image already exists
+          const exists = await ImageExtractor.imageExists(payload, imageInfo.url);
+          if (exists) continue;
+
+          // Download and create image
+          const imageData = await ImageExtractor.downloadImage(imageInfo.url);
+          if (!imageData) continue;
+
+          const createdImage = await payload.create({
+            collection: 'images',
+            data: {
+              alt: `${record.name || record.title || 'Item'} - ${fieldName}`,
+              tailorName: record.name || null,
+              sourceUrl: imageInfo.url,
+              sourceCollection: collectionSlug,
+              sourceDocumentId: docId.toString(),
+              jsonPath: imageInfo.path,
+              extractedAt: new Date().toISOString(),
+              isAutoExtracted: true,
+            },
+            file: {
+              data: imageData.buffer,
+              mimetype: imageData.mimeType,
+              name: imageData.filename,
+              size: imageData.buffer.length,
+            },
+          });
+
+          extractedImageIds.push(createdImage.id);
+          extractedCount++;
+        } catch (error) {
+          console.error(`Failed to extract image: ${imageInfo.url}`, error);
+        }
+      }
+    }
+
+    // Update the document with extracted image references if it has that field
+    if (extractedImageIds.length > 0 && collectionSlug === 'tailors') {
+      try {
+        await payload.update({
+          collection: collectionSlug,
+          id: docId,
+          data: {
+            extractedImages: extractedImageIds,
+          },
+        });
+      } catch (error) {
+        console.error('Failed to update extractedImages field:', error);
+      }
+    }
+
+  } catch (error) {
+    console.error(`Error extracting images from record ${docId}:`, error);
+  }
+
+  return extractedCount;
+}

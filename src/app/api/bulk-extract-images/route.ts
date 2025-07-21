@@ -11,25 +11,14 @@ interface DocumentData {
   [key: string]: unknown;
 }
 
-// Extended type for image creation data
-interface ImageCreationData {
-  alt: string;
-  tailorName?: string | null;
-  sourceUrl?: string;
-  sourceCollection?: string;
-  sourceDocumentId?: string;
-  jsonPath?: string;
-  extractedAt?: string;
-  isAutoExtracted?: boolean;
-}
-
 export async function POST(request: NextRequest) {
   try {
     const payload = await getPayload({
       config: configPromise,
     });
 
-    const { collectionSlug } = await request.json();
+    const body = await request.json();
+    const { collectionSlug, documentId } = body;
 
     if (!collectionSlug) {
       return NextResponse.json(
@@ -38,107 +27,78 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get all documents from the collection
-    const { docs } = await payload.find({
+    // Build query
+    const query: any = {
       collection: collectionSlug,
-      limit: 1000, // Adjust as needed
-    });
+      limit: 1000,
+    };
+
+    // If documentId provided, only process that document
+    if (documentId) {
+      query.where = {
+        id: {
+          equals: documentId,
+        },
+      };
+    }
+
+    const { docs } = await payload.find(query);
 
     let totalExtracted = 0;
     let failed = 0;
+    const processedDocs: any[] = [];
 
     for (const doc of docs as DocumentData[]) {
+      const docResult = {
+        id: doc.id,
+        name: doc.name || doc.tailor_name || 'Unknown',
+        imagesFound: 0,
+        imagesCreated: 0,
+        errors: [] as string[],
+      };
+
       try {
-        // Find JSON fields in the document
-        const jsonData: Record<string, unknown> = {};
-        Object.keys(doc).forEach(key => {
-          const value = doc[key];
-          if (typeof value === 'object' && value !== null && 
-              !Array.isArray(value) && !(value instanceof Date)) {
-            jsonData[key] = value;
-          }
+        // Find all object/array fields that might contain images
+        const potentialImageFields = Object.entries(doc).filter(([key, value]) => {
+          return value && typeof value === 'object' && !(value instanceof Date) && key !== '_id';
         });
 
-        // Extract images from JSON fields
-        for (const [fieldName, data] of Object.entries(jsonData)) {
-          // Special handling for boutique_items which has imageUrls array
-          if (fieldName === 'boutique_items' && data && typeof data === 'object') {
-            const boutiqueData = data as any;
-            if (boutiqueData.imageUrls && Array.isArray(boutiqueData.imageUrls)) {
-              for (const imageUrl of boutiqueData.imageUrls) {
-                const imageInfo = {
-                  url: imageUrl,
-                  path: `${fieldName}.imageUrls`,
-                  context: { alt: `${doc.name || 'Tailor'} - Boutique Item` }
-                };
-                // Process this image
-                try {
-                  // Check if already exists
-                  const exists = await ImageExtractor.imageExists(payload, imageInfo.url);
-                  if (exists) continue;
+        const extractedImageIds: number[] = [];
 
-                  // Download and create image
-                  const imageData = await ImageExtractor.downloadImage(imageInfo.url);
-                  if (!imageData) continue;
-
-                  await payload.create({
-                    collection: 'images',
-                    data: {
-                      alt: (imageInfo.context.alt as string) || `Image from ${collectionSlug}`,
-                      tailorName: (doc.name as string) || (doc.tailor_name as string) || null,
-                      sourceUrl: imageInfo.url,
-                      sourceCollection: collectionSlug,
-                      sourceDocumentId: doc.id.toString(),
-                      jsonPath: imageInfo.path,
-                      extractedAt: new Date().toISOString(),
-                      isAutoExtracted: true,
-                    },
-                    file: {
-                      data: imageData.buffer,
-                      mimetype: imageData.mimeType,
-                      name: imageData.filename,
-                      size: imageData.buffer.length,
-                    },
-                  });
-
-                  totalExtracted++;
-                } catch (error) {
-                  console.error(`Failed to process image: ${imageInfo.url}`, error);
-                  failed++;
-                }
-              }
-              continue;
-            }
-          }
-          
-          // Regular extraction for other fields
-          const images = ImageExtractor.extractImageUrls(data, fieldName);
+        for (const [fieldName, fieldData] of potentialImageFields) {
+          // Extract images from this field
+          const images = ImageExtractor.extractImageUrls(fieldData, fieldName);
+          docResult.imagesFound += images.length;
           
           for (const imageInfo of images) {
             try {
               // Check if already exists
               const exists = await ImageExtractor.imageExists(payload, imageInfo.url);
-              if (exists) continue;
+              if (exists) {
+                console.log(`Image already exists: ${imageInfo.url}`);
+                continue;
+              }
 
               // Download and create image
               const imageData = await ImageExtractor.downloadImage(imageInfo.url);
-              if (!imageData) continue;
+              if (!imageData) {
+                docResult.errors.push(`Failed to download: ${imageInfo.url}`);
+                continue;
+              }
 
-              // Create the data object with proper typing
-              const creationData: ImageCreationData = {
-                alt: (imageInfo.context.alt as string) || `Image from ${collectionSlug}`,
-                tailorName: (doc.name as string) || (doc.tailor_name as string) || null,
-                sourceUrl: imageInfo.url,
-                sourceCollection: collectionSlug,
-                sourceDocumentId: doc.id.toString(),
-                jsonPath: imageInfo.path,
-                extractedAt: new Date().toISOString(),
-                isAutoExtracted: true,
-              };
-
-              await payload.create({
+              const createdImage = await payload.create({
                 collection: 'images',
-                data: creationData as any, // Type assertion to bypass strict typing
+                data: {
+                  alt: (imageInfo.context.alt as string) || 
+                       `${doc.name || doc.tailor_name || 'Item'} - ${fieldName}`,
+                  tailorName: (doc.name as string) || (doc.tailor_name as string) || null,
+                  sourceUrl: imageInfo.url,
+                  sourceCollection: collectionSlug,
+                  sourceDocumentId: doc.id.toString(),
+                  jsonPath: imageInfo.path,
+                  extractedAt: new Date().toISOString(),
+                  isAutoExtracted: true,
+                },
                 file: {
                   data: imageData.buffer,
                   mimetype: imageData.mimeType,
@@ -147,15 +107,44 @@ export async function POST(request: NextRequest) {
                 },
               });
 
+              extractedImageIds.push(createdImage.id);
               totalExtracted++;
+              docResult.imagesCreated++;
             } catch (error) {
               console.error(`Failed to process image: ${imageInfo.url}`, error);
+              docResult.errors.push(`${imageInfo.url}: ${error}`);
               failed++;
             }
           }
         }
+
+        // Update the document with extracted images if it has that field
+        if (extractedImageIds.length > 0 && collectionSlug === 'tailors') {
+          try {
+            const existingDoc = await payload.findByID({
+              collection: collectionSlug,
+              id: doc.id,
+            });
+
+            const currentImages = existingDoc.extractedImages || [];
+            const allImageIds = [...new Set([...currentImages, ...extractedImageIds])];
+
+            await payload.update({
+              collection: collectionSlug,
+              id: doc.id,
+              data: {
+                extractedImages: allImageIds,
+              },
+            });
+          } catch (error) {
+            console.error('Failed to update extractedImages:', error);
+          }
+        }
+
+        processedDocs.push(docResult);
       } catch (error) {
         console.error(`Failed to process document ${doc.id}:`, error);
+        docResult.errors.push(`Document processing error: ${error}`);
       }
     }
 
@@ -167,11 +156,12 @@ export async function POST(request: NextRequest) {
         imagesExtracted: totalExtracted,
         failed,
       },
+      details: processedDocs,
     });
   } catch (error) {
     console.error('Bulk extraction error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
