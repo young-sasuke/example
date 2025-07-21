@@ -11,12 +11,25 @@ export interface ExtractedImageInfo {
 export class ImageExtractor {
   // Common image URL patterns
   private static imageUrlPatterns = [
-    /https?:\/\/.*\.(jpg|jpeg|png|gif|webp|svg|bmp)/i,
+    /https?:\/\/.*\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i,
+    /https?:\/\/.*\.(jpg|jpeg|png|gif|webp|svg|bmp)\?/i,
     /https?:\/\/.*\/.*\?.*format=(jpg|jpeg|png|gif|webp)/i,
     // Add patterns for common CDN URLs
     /https?:\/\/.*cloudinary\.com\/.*\/(upload|fetch)\/.*/i,
     /https?:\/\/.*\.supabase\.co\/storage\/.*\/(public|private)\/.*/i,
     /https?:\/\/.*\.imgur\.com\/.*/i,
+    // More generic patterns
+    /https?:\/\/.*\/(.*\.(jpg|jpeg|png|gif|webp|svg|bmp))/i,
+    // Firebase storage
+    /https?:\/\/firebasestorage\.googleapis\.com\/.*/i,
+    // AWS S3
+    /https?:\/\/.*\.s3.*\.amazonaws\.com\/.*/i,
+    /https?:\/\/s3.*\.amazonaws\.com\/.*/i,
+    // Generic CDN patterns
+    /https?:\/\/cdn\..*/i,
+    /https?:\/\/.*\.cdn\..*/i,
+    // Image in path
+    /https?:\/\/.*\/(image|images|img|photo|photos|pic|pics|picture|pictures)\/.*/i,
   ];
 
   /**
