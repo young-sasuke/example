@@ -1,12 +1,8 @@
+// src/collections/tailors.ts
 import type { CollectionConfig } from 'payload';
-import type {
-  PayloadComponent,
-  DefaultCellComponentProps,
-  DefaultServerCellComponentProps,
-} from 'payload';
 import StatusToggle from '../components/StatusToggle';
-import PrettifyJSON from '../components/PrettifyJSON';  
-
+import PrettifyJSON from '../components/PrettifyJSON';
+import { autoExtractImagesHook, trackImageUrlsBeforeChange } from '../hooks/autoExtractImages';
 
 export const Tailors: CollectionConfig = {
   slug: 'tailors',
@@ -26,6 +22,10 @@ export const Tailors: CollectionConfig = {
       'updatedAt',
       'createdAt',
     ],
+  },
+  hooks: {
+    beforeChange: [trackImageUrlsBeforeChange],
+    afterChange: [autoExtractImagesHook],
   },
   access: {
     read: () => true,
@@ -64,7 +64,6 @@ export const Tailors: CollectionConfig = {
       type: 'json',
       admin: {
         components: {
-          // Use PrettifyJSON to display boutique_items prettified
           Cell: PrettifyJSON,
         },
       },
@@ -74,7 +73,6 @@ export const Tailors: CollectionConfig = {
       type: 'json',
       admin: {
         components: {
-          // Use PrettifyJSON to display boutique_items prettified
           Cell: PrettifyJSON,
         },
       },
@@ -84,7 +82,6 @@ export const Tailors: CollectionConfig = {
       type: 'json',
       admin: {
         components: {
-          // Use PrettifyJSON to display boutique_items prettified
           Cell: PrettifyJSON,
         },
       },
@@ -94,7 +91,6 @@ export const Tailors: CollectionConfig = {
       type: 'json',
       admin: {
         components: {
-          // Use PrettifyJSON to display boutique_items prettified
           Cell: PrettifyJSON,
         },
       },
@@ -119,6 +115,22 @@ export const Tailors: CollectionConfig = {
     {
       name: 'rents',
       type: 'json',
+      admin: {
+        components: {
+          Cell: PrettifyJSON,
+        },
+      },
+    },
+    // New field to track extracted images
+    {
+      name: 'extractedImages',
+      type: 'relationship',
+      relationTo: 'images',
+      hasMany: true,
+      admin: {
+        description: 'Images automatically extracted from JSON fields',
+        position: 'sidebar',
+      },
     },
   ],
 };

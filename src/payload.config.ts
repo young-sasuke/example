@@ -1,3 +1,4 @@
+// src/payload.config.ts
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
@@ -52,6 +53,15 @@ export default buildConfig({
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
+    },
+    components: {
+      // This is where we add custom views
+      views: {
+        ImageManager: {
+          Component: '/components/ImageManagerView#default',
+          path: '/image-manager',
+        },
+      },
     },
   },
   collections: [

@@ -1,7 +1,8 @@
+// src/components/StatusToggle.tsx
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import type { DefaultCellComponentProps, PayloadComponent } from 'payload';
+import type { DefaultCellComponentProps } from 'payload';
 
 // ✅ Define the component with explicit props type
 const StatusToggle: React.FC<DefaultCellComponentProps> = ({ cellData, rowData }) => {

@@ -185,6 +185,24 @@ export interface Image {
   id: number;
   alt: string;
   tailorName?: string | null;
+  /**
+   * The original URL where this image was found
+   */
+  sourceUrl?: string | null;
+  /**
+   * The collection where this image was extracted from
+   */
+  sourceCollection?: string | null;
+  sourceDocumentId?: string | null;
+  /**
+   * The JSON path where this image was found
+   */
+  jsonPath?: string | null;
+  extractedAt?: string | null;
+  /**
+   * Was this image automatically extracted from JSON data?
+   */
+  isAutoExtracted?: boolean | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -198,6 +216,22 @@ export interface Image {
   focalY?: number | null;
   sizes?: {
     thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    large?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -611,6 +645,10 @@ export interface Tailor {
     | number
     | boolean
     | null;
+  /**
+   * Images automatically extracted from JSON fields
+   */
+  extractedImages?: (number | Image)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1020,6 +1058,12 @@ export interface PayloadMigration {
 export interface ImagesSelect<T extends boolean = true> {
   alt?: T;
   tailorName?: T;
+  sourceUrl?: T;
+  sourceCollection?: T;
+  sourceDocumentId?: T;
+  jsonPath?: T;
+  extractedAt?: T;
+  isAutoExtracted?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1035,6 +1079,26 @@ export interface ImagesSelect<T extends boolean = true> {
     | T
     | {
         thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        medium?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        large?:
           | T
           | {
               url?: T;
@@ -1326,6 +1390,7 @@ export interface TailorsSelect<T extends boolean = true> {
   fcm_token?: T;
   status?: T;
   rents?: T;
+  extractedImages?: T;
   updatedAt?: T;
   createdAt?: T;
 }
