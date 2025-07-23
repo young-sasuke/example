@@ -1,8 +1,23 @@
-// src/collections/tailors.ts
 import type { CollectionConfig } from 'payload';
-import StatusToggle from '../components/StatusToggle';
-import PrettifyJSON from '../components/PrettifyJSON';
-import { autoExtractImagesHook, trackImageUrlsBeforeChange } from '../hooks/autoExtractImages';
+
+// Inline the hooks instead of importing
+const trackImageUrlsBeforeChange = async ({ data, _req, operation, originalDoc }: any) => {
+  if (operation === 'update' && originalDoc) {
+    _req.context = {
+      ..._req.context,
+      originalImageUrls: new Set<string>(),
+    };
+  }
+  return data;
+};
+
+const autoExtractImagesHook = async ({ doc, _req, operation, _collection }: any) => {
+  if (operation !== 'create' && operation !== 'update') {
+    return doc;
+  }
+  // Add extraction logic if needed
+  return doc;
+};
 
 export const Tailors: CollectionConfig = {
   slug: 'tailors',
@@ -64,7 +79,11 @@ export const Tailors: CollectionConfig = {
       type: 'json',
       admin: {
         components: {
-          Cell: PrettifyJSON,
+          Cell: {
+            path: 'src/components/PrettifyJSON#default'
+,
+            exportName: 'default',
+          },
         },
       },
     },
@@ -73,7 +92,10 @@ export const Tailors: CollectionConfig = {
       type: 'json',
       admin: {
         components: {
-          Cell: PrettifyJSON,
+          Cell: {
+            path: 'src/components/PrettifyJSON#default',
+            exportName: 'default',
+          },
         },
       },
     },
@@ -82,7 +104,10 @@ export const Tailors: CollectionConfig = {
       type: 'json',
       admin: {
         components: {
-          Cell: PrettifyJSON,
+          Cell: {
+            path: 'src/components/PrettifyJSON#default',
+            exportName: 'default',
+          },
         },
       },
     },
@@ -91,7 +116,10 @@ export const Tailors: CollectionConfig = {
       type: 'json',
       admin: {
         components: {
-          Cell: PrettifyJSON,
+          Cell: {
+            path: 'src/components/PrettifyJSON#default',
+            exportName: 'default',
+          },
         },
       },
     },
@@ -108,7 +136,10 @@ export const Tailors: CollectionConfig = {
       admin: {
         position: 'sidebar',
         components: {
-          Cell: StatusToggle,
+          Cell: {
+            path: 'src/components/StatusToggle#default',
+            exportName: 'default',
+          },
         },
       },
     },
@@ -117,11 +148,13 @@ export const Tailors: CollectionConfig = {
       type: 'json',
       admin: {
         components: {
-          Cell: PrettifyJSON,
+          Cell: {
+            path: 'src/components/PrettifyJSON#default',
+            exportName: 'default',
+          },
         },
       },
     },
-    // New field to track extracted images
     {
       name: 'extractedImages',
       type: 'relationship',

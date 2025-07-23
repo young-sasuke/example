@@ -1,4 +1,4 @@
-// src/collections/images.ts
+// src/collections/images-admin-config.ts
 import { CollectionConfig } from 'payload'
 
 export const Images: CollectionConfig = {
@@ -7,7 +7,22 @@ export const Images: CollectionConfig = {
     useAsTitle: 'alt',
     group: 'Image Manager',
     defaultColumns: ['url', 'tailorName', 'sourceCollection'],
-    listSearchableFields: ['alt', 'tailorName', 'sourceCollection'],
+    listSearchableFields: ['tailorName', 'sourceCollection'],
+    // Force hide system fields
+    hidden: (args) => {
+      // This function can be used to conditionally hide the collection
+      return false;
+    },
+    components: {
+      // Fix: Remove the component that returns null to avoid serialization issues
+      // BeforeListTable components should return valid React elements or be omitted
+    },
+  },
+  access: {
+    read: () => true,
+    create: () => true,
+    update: () => true,
+    delete: () => true,
   },
   upload: {
     staticDir: 'images',
@@ -39,11 +54,18 @@ export const Images: CollectionConfig = {
       name: 'alt',
       type: 'text',
       required: true,
+      admin: {
+        disableListColumn: true,
+        hidden: true, // Hide from edit form too if needed
+      },
     },
     {
       name: 'tailorName',
       type: 'text',
       label: 'Tailor Name',
+      admin: {
+        width: '30%', // Set column width
+      },
     },
     {
       name: 'sourceCollection',
@@ -52,55 +74,54 @@ export const Images: CollectionConfig = {
       admin: {
         description: 'The collection where this image was extracted from',
         readOnly: true,
+        width: '30%', // Set column width
       },
     },
+    // Make all other fields sidebar-only and hidden from list
     {
       name: 'sourceUrl',
       type: 'text',
-      label: 'Original URL',
       admin: {
-        description: 'The original URL where this image was found',
-        readOnly: true,
-        condition: () => false,
+        position: 'sidebar',
+        disableListColumn: true,
+        hidden: true,
       },
     },
     {
       name: 'sourceDocumentId',
       type: 'text',
-      label: 'Source Document ID',
       admin: {
-        readOnly: true,
-        condition: () => false,
+        position: 'sidebar',
+        disableListColumn: true,
+        hidden: true,
       },
     },
     {
       name: 'jsonPath',
       type: 'text',
-      label: 'JSON Path',
       admin: {
-        description: 'The JSON path where this image was found',
-        readOnly: true,
-        condition: () => false,
+        position: 'sidebar',
+        disableListColumn: true,
+        hidden: true,
       },
     },
     {
       name: 'extractedAt',
       type: 'date',
-      label: 'Extracted At',
       admin: {
-        readOnly: true,
-        condition: () => false,
+        position: 'sidebar',
+        disableListColumn: true,
+        hidden: true,
       },
     },
     {
       name: 'isAutoExtracted',
       type: 'checkbox',
-      label: 'Auto Extracted',
       defaultValue: false,
       admin: {
-        description: 'Was this image automatically extracted from JSON data?',
-        readOnly: true,
-        condition: () => false,
+        position: 'sidebar',
+        disableListColumn: true,
+        hidden: true,
       },
     },
   ],

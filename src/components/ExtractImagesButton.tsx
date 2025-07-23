@@ -8,12 +8,20 @@ interface ExtractImagesButtonProps {
   documentId?: string | number;
 }
 
+interface ExtractResult {
+  success?: boolean;
+  error?: string;
+  stats?: {
+    imagesExtracted?: number;
+  };
+}
+
 export const ExtractImagesButton: React.FC<ExtractImagesButtonProps> = ({ 
   collectionSlug, 
   documentId 
 }) => {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<ExtractResult | null>(null);
 
   const handleExtract = async () => {
     setLoading(true);

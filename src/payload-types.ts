@@ -186,13 +186,13 @@ export interface Image {
   alt: string;
   tailorName?: string | null;
   /**
-   * The original URL where this image was found
-   */
-  sourceUrl?: string | null;
-  /**
    * The collection where this image was extracted from
    */
   sourceCollection?: string | null;
+  /**
+   * The original URL where this image was found
+   */
+  sourceUrl?: string | null;
   sourceDocumentId?: string | null;
   /**
    * The JSON path where this image was found
@@ -1058,8 +1058,8 @@ export interface PayloadMigration {
 export interface ImagesSelect<T extends boolean = true> {
   alt?: T;
   tailorName?: T;
-  sourceUrl?: T;
   sourceCollection?: T;
+  sourceUrl?: T;
   sourceDocumentId?: T;
   jsonPath?: T;
   extractedAt?: T;

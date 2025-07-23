@@ -2,7 +2,11 @@
 'use client';
 
 import React from 'react';
-import ImageManagerDashboard from './ImageManagerDashboard';
+import dynamic from 'next/dynamic';
+
+const ImageManagerDashboard = dynamic(() => import('./ImageManagerDashboard'), {
+  ssr: false,
+});
 
 const ImageManagerView: React.FC = () => {
   return <ImageManagerDashboard />;

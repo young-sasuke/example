@@ -12,6 +12,11 @@ interface SupabaseRecord {
   [key: string]: unknown;
 }
 
+interface PayloadDoc {
+  id: string | number;
+  [key: string]: unknown;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const payload = await getPayload({
@@ -67,7 +72,7 @@ export async function POST(request: NextRequest) {
           const updatedDoc = await payload.update({
             collection: collectionSlug,
             id: existing.docs[0].id,
-            data: record as any,
+            data: record as PayloadDoc,
           });
           updated++;
           docId = updatedDoc.id;
@@ -75,7 +80,7 @@ export async function POST(request: NextRequest) {
           // Create new record
           const createdDoc = await payload.create({
             collection: collectionSlug,
-            data: record as any,
+            data: record as PayloadDoc,
           });
           created++;
           docId = createdDoc.id;
@@ -117,7 +122,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function extractImagesFromRecord(
-  payload: any,
+  payload: ReturnType<typeof getPayload> extends Promise<infer T> ? T : never,
   record: SupabaseRecord,
   collectionSlug: string,
   docId: string | number
