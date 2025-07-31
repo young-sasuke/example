@@ -146,7 +146,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   globals: {};
   globalsSelect: {};
@@ -182,7 +182,7 @@ export interface UserAuthOperations {
  * via the `definition` "images".
  */
 export interface Image {
-  id: number;
+  id: string;
   alt: string;
   tailorName?: string | null;
   /**
@@ -246,7 +246,7 @@ export interface Image {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -270,7 +270,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: string;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -289,11 +289,11 @@ export interface Media {
  * via the `definition` "User".
  */
 export interface User1 {
-  id: number;
+  id: string;
   email: string;
   role?: string | null;
   created_at?: string | null;
-  Design?:
+  design?:
     | {
         [k: string]: unknown;
       }
@@ -302,7 +302,7 @@ export interface User1 {
     | number
     | boolean
     | null;
-  Measurement?:
+  measurement?:
     | {
         [k: string]: unknown;
       }
@@ -320,7 +320,7 @@ export interface User1 {
     | number
     | boolean
     | null;
-  Address?:
+  address?:
     | {
         [k: string]: unknown;
       }
@@ -343,6 +343,7 @@ export interface User1 {
     | number
     | boolean
     | null;
+  fcm_token?: string | null;
   fabric_samples_image?:
     | {
         [k: string]: unknown;
@@ -358,7 +359,7 @@ export interface User1 {
  * via the `definition` "categories".
  */
 export interface Category {
-  id: number;
+  id: string;
   name: string;
   image_url?: string | null;
   is_active?: boolean | null;
@@ -371,7 +372,7 @@ export interface Category {
  * via the `definition` "featured_products".
  */
 export interface FeaturedProduct {
-  id: number;
+  id: string;
   name: string;
   description?: string | null;
   price: string;
@@ -386,7 +387,7 @@ export interface FeaturedProduct {
  * via the `definition` "fall_items".
  */
 export interface FallItem {
-  id: number;
+  id: string;
   item_name: string;
   price?: number | null;
   image_url?: string | null;
@@ -398,7 +399,7 @@ export interface FallItem {
  * via the `definition` "fabric_repair_items".
  */
 export interface FabricRepairItem {
-  id: number;
+  id: string;
   item_name: string;
   price?: number | null;
   image_url?: string | null;
@@ -410,7 +411,7 @@ export interface FabricRepairItem {
  * via the `definition` "fabric_essentials".
  */
 export interface FabricEssential {
-  id: number;
+  id: string;
   name: string;
   description?: string | null;
   image_url?: string | null;
@@ -426,7 +427,7 @@ export interface FabricEssential {
  * via the `definition` "dyeing_items".
  */
 export interface DyeingItem {
-  id: number;
+  id: string;
   item_name: string;
   price?: number | null;
   image_url?: string | null;
@@ -438,7 +439,7 @@ export interface DyeingItem {
  * via the `definition` "design_parts".
  */
 export interface DesignPart {
-  id: number;
+  id: string;
   category: string;
   item_type: string;
   part_type: string;
@@ -451,7 +452,7 @@ export interface DesignPart {
  * via the `definition` "delivery_status_updates".
  */
 export interface DeliveryStatusUpdate {
-  id: number;
+  id: string;
   assignment_id?: string | null;
   status?: string | null;
   timestamp?: string | null;
@@ -461,7 +462,7 @@ export interface DeliveryStatusUpdate {
  * via the `definition` "coupons".
  */
 export interface Coupon {
-  id: number;
+  id: string;
   code: string;
   title: string;
   description?: string | null;
@@ -489,7 +490,7 @@ export interface Coupon {
  * via the `definition` "admins".
  */
 export interface Admin {
-  id: number;
+  id: string;
   email: string;
   role: string;
   lastlogin?: number | null;
@@ -500,7 +501,7 @@ export interface Admin {
  * via the `definition` "alteration_items".
  */
 export interface AlterationItem {
-  id: number;
+  id: string;
   item_name: string;
   category: string;
   price?: number | null;
@@ -512,7 +513,7 @@ export interface AlterationItem {
  * via the `definition` "boys_clothing".
  */
 export interface BoysClothing {
-  id: number;
+  id: string;
   name: string;
   description?: string | null;
   image_url?: string | null;
@@ -527,7 +528,7 @@ export interface BoysClothing {
  * via the `definition` "cart_items".
  */
 export interface CartItem {
-  id: number;
+  id: string;
   user_id: string;
   item_type?: string | null;
   category?: string | null;
@@ -561,7 +562,7 @@ export interface CartItem {
  * via the `definition` "delivery_assignments".
  */
 export interface DeliveryAssignment {
-  id: number;
+  id: string;
   order_id?: string | null;
   delivery_person_id?: string | null;
   assigned_at?: string | null;
@@ -572,7 +573,7 @@ export interface DeliveryAssignment {
  * via the `definition` "delivery_personnel".
  */
 export interface DeliveryPersonnel {
-  id: number;
+  id: string;
   email: string;
   name?: string | null;
   phone_number?: string | null;
@@ -583,7 +584,7 @@ export interface DeliveryPersonnel {
  * via the `definition` "delivery_images".
  */
 export interface DeliveryImage {
-  id: number;
+  id: string;
   assignment_id?: string | null;
   image_type?: string | null;
   image_url?: string | null;
@@ -648,7 +649,7 @@ export interface Tailor {
   /**
    * Images automatically extracted from JSON fields
    */
-  extractedImages?: (number | Image)[] | null;
+  extractedImages?: (string | Image)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -657,7 +658,7 @@ export interface Tailor {
  * via the `definition` "lintremoval_items".
  */
 export interface LintremovalItem {
-  id: number;
+  id: string;
   item_name: string;
   description?: string | null;
   delivery?: string | null;
@@ -671,7 +672,7 @@ export interface LintremovalItem {
  * via the `definition` "rafu_items".
  */
 export interface RafuItem {
-  id: number;
+  id: string;
   item_name: string;
   price?: number | null;
   image_url?: string | null;
@@ -683,7 +684,7 @@ export interface RafuItem {
  * via the `definition` "girls_clothing".
  */
 export interface GirlsClothing {
-  id: number;
+  id: string;
   name: string;
   description?: string | null;
   image_url?: string | null;
@@ -698,7 +699,7 @@ export interface GirlsClothing {
  * via the `definition` "orders".
  */
 export interface Order {
-  id: number;
+  id: string;
   user_id: string;
   tailor_id?: string | null;
   tailor_name: string;
@@ -720,7 +721,7 @@ export interface Order {
  * via the `definition` "men_clothing".
  */
 export interface MenClothing {
-  id: number;
+  id: string;
   name: string;
   description?: string | null;
   image_url?: string | null;
@@ -735,7 +736,7 @@ export interface MenClothing {
  * via the `definition` "otp_requests".
  */
 export interface OtpRequest {
-  id: number;
+  id: string;
   phone_number: string;
   otp: string;
   expires_at: string;
@@ -747,7 +748,7 @@ export interface OtpRequest {
  * via the `definition` "pico_items".
  */
 export interface PicoItem {
-  id: number;
+  id: string;
   item_name: string;
   price?: number | null;
   image_url?: string | null;
@@ -758,7 +759,7 @@ export interface PicoItem {
  * via the `definition` "profiles".
  */
 export interface Profile {
-  id: number;
+  id: string;
   created_at: string;
   name?: string | null;
   bio?:
@@ -794,7 +795,7 @@ export interface Profile {
  * via the `definition` "quickfix_orders".
  */
 export interface QuickfixOrder {
-  id: number;
+  id: string;
   user_id: string;
   tailor_name: string;
   items:
@@ -816,7 +817,7 @@ export interface QuickfixOrder {
  * via the `definition` "service_areas".
  */
 export interface ServiceArea {
-  id: number;
+  id: string;
   city_name: string;
   state_name: string;
   country_name?: string | null;
@@ -829,7 +830,7 @@ export interface ServiceArea {
  * via the `definition` "top_tailors".
  */
 export interface TopTailor {
-  id: number;
+  id: string;
   name: string;
   image_url?: string | null;
   rating?: number | null;
@@ -844,7 +845,7 @@ export interface TopTailor {
  * via the `definition` "user_coupons".
  */
 export interface UserCoupon {
-  id: number;
+  id: string;
   user_id: string;
   coupon_id: string;
   used_at?: string | null;
@@ -856,7 +857,7 @@ export interface UserCoupon {
  * via the `definition` "women_clothing".
  */
 export interface WomenClothing {
-  id: number;
+  id: string;
   name: string;
   description?: string | null;
   image_url?: string | null;
@@ -871,87 +872,87 @@ export interface WomenClothing {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'images';
-        value: number | Image;
+        value: string | Image;
       } | null)
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'User';
-        value: number | User1;
+        value: string | User1;
       } | null)
     | ({
         relationTo: 'categories';
-        value: number | Category;
+        value: string | Category;
       } | null)
     | ({
         relationTo: 'featured_products';
-        value: number | FeaturedProduct;
+        value: string | FeaturedProduct;
       } | null)
     | ({
         relationTo: 'fall_items';
-        value: number | FallItem;
+        value: string | FallItem;
       } | null)
     | ({
         relationTo: 'fabric_repair_items';
-        value: number | FabricRepairItem;
+        value: string | FabricRepairItem;
       } | null)
     | ({
         relationTo: 'fabric_essentials';
-        value: number | FabricEssential;
+        value: string | FabricEssential;
       } | null)
     | ({
         relationTo: 'dyeing_items';
-        value: number | DyeingItem;
+        value: string | DyeingItem;
       } | null)
     | ({
         relationTo: 'design_parts';
-        value: number | DesignPart;
+        value: string | DesignPart;
       } | null)
     | ({
         relationTo: 'delivery_status_updates';
-        value: number | DeliveryStatusUpdate;
+        value: string | DeliveryStatusUpdate;
       } | null)
     | ({
         relationTo: 'coupons';
-        value: number | Coupon;
+        value: string | Coupon;
       } | null)
     | ({
         relationTo: 'admins';
-        value: number | Admin;
+        value: string | Admin;
       } | null)
     | ({
         relationTo: 'alteration_items';
-        value: number | AlterationItem;
+        value: string | AlterationItem;
       } | null)
     | ({
         relationTo: 'boys_clothing';
-        value: number | BoysClothing;
+        value: string | BoysClothing;
       } | null)
     | ({
         relationTo: 'cart_items';
-        value: number | CartItem;
+        value: string | CartItem;
       } | null)
     | ({
         relationTo: 'delivery_assignments';
-        value: number | DeliveryAssignment;
+        value: string | DeliveryAssignment;
       } | null)
     | ({
         relationTo: 'delivery_personnel';
-        value: number | DeliveryPersonnel;
+        value: string | DeliveryPersonnel;
       } | null)
     | ({
         relationTo: 'delivery_images';
-        value: number | DeliveryImage;
+        value: string | DeliveryImage;
       } | null)
     | ({
         relationTo: 'tailors';
@@ -959,60 +960,60 @@ export interface PayloadLockedDocument {
       } | null)
     | ({
         relationTo: 'lintremoval_items';
-        value: number | LintremovalItem;
+        value: string | LintremovalItem;
       } | null)
     | ({
         relationTo: 'rafu_items';
-        value: number | RafuItem;
+        value: string | RafuItem;
       } | null)
     | ({
         relationTo: 'girls_clothing';
-        value: number | GirlsClothing;
+        value: string | GirlsClothing;
       } | null)
     | ({
         relationTo: 'orders';
-        value: number | Order;
+        value: string | Order;
       } | null)
     | ({
         relationTo: 'men_clothing';
-        value: number | MenClothing;
+        value: string | MenClothing;
       } | null)
     | ({
         relationTo: 'otp_requests';
-        value: number | OtpRequest;
+        value: string | OtpRequest;
       } | null)
     | ({
         relationTo: 'pico_items';
-        value: number | PicoItem;
+        value: string | PicoItem;
       } | null)
     | ({
         relationTo: 'profiles';
-        value: number | Profile;
+        value: string | Profile;
       } | null)
     | ({
         relationTo: 'quickfix_orders';
-        value: number | QuickfixOrder;
+        value: string | QuickfixOrder;
       } | null)
     | ({
         relationTo: 'service_areas';
-        value: number | ServiceArea;
+        value: string | ServiceArea;
       } | null)
     | ({
         relationTo: 'top_tailors';
-        value: number | TopTailor;
+        value: string | TopTailor;
       } | null)
     | ({
         relationTo: 'user_coupons';
-        value: number | UserCoupon;
+        value: string | UserCoupon;
       } | null)
     | ({
         relationTo: 'women_clothing';
-        value: number | WomenClothing;
+        value: string | WomenClothing;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -1022,10 +1023,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -1045,7 +1046,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -1158,16 +1159,17 @@ export interface UserSelect<T extends boolean = true> {
   email?: T;
   role?: T;
   created_at?: T;
-  Design?: T;
-  Measurement?: T;
+  design?: T;
+  measurement?: T;
   profile?: T;
-  Address?: T;
+  address?: T;
   password?: T;
   profile_image_url?: T;
   phone_number?: T;
   requirement_images?: T;
   sample_images?: T;
   measurement_samples?: T;
+  fcm_token?: T;
   fabric_samples_image?: T;
 }
 /**

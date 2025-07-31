@@ -23,11 +23,11 @@ export const User: CollectionConfig = {
       type: 'date',
     },
     {
-      name: 'Design',
+      name: 'design',
       type: 'json',
     },
     {
-      name: 'Measurement',
+      name: 'measurement',
       type: 'json',
     },
     {
@@ -35,7 +35,7 @@ export const User: CollectionConfig = {
       type: 'json',
     },
     {
-      name: 'Address',
+      name: 'address',
       type: 'json',
     },
     {
@@ -61,6 +61,10 @@ export const User: CollectionConfig = {
     {
       name: 'measurement_samples',
       type: 'json',
+    },
+    {
+      name: 'fcm_token',
+      type: 'text',
     },
     {
       name: 'fabric_samples_image',
